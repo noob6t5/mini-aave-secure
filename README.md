@@ -1,2 +1,41 @@
-# mini-aave-secure
-Lending Protocol : Mini -aave as my solidity project
+## Overview
+
+Lending Protocol
+├── Actors
+│   ├── Owner → registers assets, sets params
+│   ├── User → deposits collateral, borrows, repays
+│   ├── Liquidator → hunts bad accounts, seizes collateral
+│   ├── Oracle → provides asset prices
+│   └── Protocol → enforces rules, holds tokens
+│
+├── Phase 1: Core Skeleton
+│   ├── AssetConfig (decimals, LTV, thresholds)
+│   ├── PriceOracle (mock)
+│   ├── Balances (collateral, debt)
+│   ├── Deposit/Withdraw
+│   ├── Borrow/Repay
+│   └── Liquidation (HF < 1)
+│
+├── Phase 2: Risk & Interest
+│   ├── Interest accrual
+│   ├── Utilization rates
+│   ├── Reserve pool
+│   └── Flash loans
+│
+├── Phase 3: Oracles
+│   ├── Mock oracle
+│   ├── TWAP oracle
+│   ├── Multi-source aggregation
+│   └── Manipulation simulations
+│
+├── Phase 4: Exploit Mode
+│   ├── Oracle manipulation
+│   ├── Liquidation reentrancy
+│   ├── Config bugs
+│   └── Proxy upgrade attacks
+│
+└── Phase 5: Advanced
+    ├── NFT collateral
+    ├── Governance
+    ├── Bots
+    └── Cross-chain lending
