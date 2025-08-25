@@ -2,13 +2,10 @@
 pragma solidity ^0.8.30;
 
 interface AggregatorV3Interface {
-    function latestRoundData() external view returns (
-        uint80 roundId,
-        int256 answer,
-        uint256 startedAt,
-        uint256 updatedAt,
-        uint80 answeredInRound
-    ); 
+    function latestRoundData()
+        external
+        view
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
 }
 
 contract PriceOracle {
@@ -17,7 +14,8 @@ contract PriceOracle {
     mapping(address => address) public feeds;
 
     mapping(address => uint256) private manualPrices;
-     event PriceUpdated(address indexed asset, uint256 oldPrice, uint256 newPrice);
+
+    event PriceUpdated(address indexed asset, uint256 oldPrice, uint256 newPrice);
     event FeedAdded(address indexed asset, address feed);
 
     // Modifier for owner-only access
@@ -53,7 +51,7 @@ contract PriceOracle {
         address feed = feeds[asset];
 
         if (feed != address(0)) {
-            (,int256 answer,,,) = AggregatorV3Interface(feed).latestRoundData();
+            (, int256 answer,,,) = AggregatorV3Interface(feed).latestRoundData();
             require(answer > 0, "Feed returned invalid price");
             return uint256(answer) * 1e10; // normalize 8 decimals -> 1e18
         }
@@ -62,11 +60,4 @@ contract PriceOracle {
         require(manual > 0, "Price not available");
         return manual;
     }
-
-    
-
-
 }
-
-
-

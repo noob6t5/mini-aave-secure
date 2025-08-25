@@ -19,20 +19,13 @@ contract AssetConfig {
     mapping(address => Config) private assets;
 
     event AssetListed(
-        address indexed asset,
-        uint8 decimals,
-        uint256 collateralFactor,
-        uint256 liqThreshold,
-        uint256 liqBonus
+        address indexed asset, uint8 decimals, uint256 collateralFactor, uint256 liqThreshold, uint256 liqBonus
     );
-    
-    event AssetUpdated(
-        address indexed asset,
-        uint8 decimals,
-        uint256 collateralFactor,  //  how some1 can borrow against their asset
-        uint256 liqThreshold,      //  liquidation triagger
-        uint256 liqBonus           // bonus incentive for liquidators.
-    );
+
+    event AssetUpdated( //  how some1 can borrow against their asset
+        //  liquidation triagger
+        // bonus incentive for liquidators.
+    address indexed asset, uint8 decimals, uint256 collateralFactor, uint256 liqThreshold, uint256 liqBonus);
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
@@ -80,31 +73,22 @@ contract AssetConfig {
         uint256[] calldata liqBonuses
     ) external onlyOwner {
         require(
-            assetList.length == decimalsList.length &&
-            assetList.length == collateralFactors.length &&
-            assetList.length == liqThresholds.length &&
-            assetList.length == liqBonuses.length,
+            assetList.length == decimalsList.length && assetList.length == collateralFactors.length
+                && assetList.length == liqThresholds.length && assetList.length == liqBonuses.length,
             "Array length mismatch"
         );
 
-        for (uint i = 0; i < assetList.length; i++) {
-            listOrUpdateAsset(
-                assetList[i],
-                decimalsList[i],
-                collateralFactors[i],
-                liqThresholds[i],
-                liqBonuses[i]
-            );
+        for (uint256 i = 0; i < assetList.length; i++) {
+            listOrUpdateAsset(assetList[i], decimalsList[i], collateralFactors[i], liqThresholds[i], liqBonuses[i]);
         }
     }
 
     // Read access
-    function getConfig(address asset) external view returns (
-        uint8 decimals,
-        uint256 collateralFactor,
-        uint256 liqThreshold,
-        uint256 liqBonus
-    ) {
+    function getConfig(address asset)
+        external
+        view
+        returns (uint8 decimals, uint256 collateralFactor, uint256 liqThreshold, uint256 liqBonus)
+    {
         require(assets[asset].exists, "Asset not listed");
         Config memory cfg = assets[asset];
         return (cfg.decimals, cfg.collateralFactor, cfg.liqThreshold, cfg.liqBonus);
